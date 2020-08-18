@@ -3,13 +3,11 @@
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       95
-Release:       3%{?dist}
+Version:       96
+Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
-# https://github.com/WebAssembly/binaryen/issues/2970
-Patch0:        %{name}-95-node-warn.patch
 # https://github.com/WebAssembly/binaryen/issues/2999
 Patch1:        %{name}-95-lib-tests.patch
 License:       ASL 2.0
@@ -53,7 +51,6 @@ effective:
 
 %prep
 %setup -q -n %{name}-version_%{version}
-%patch0 -p1
 %patch1 -p1
 
 %build
@@ -93,6 +90,10 @@ effective:
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Tue Aug 18 2020 Dominik Mierzejewski <rpm@greysector.net> 96-1
+- update to 96
+- drop obsolete patch
+
 * Wed Jul 29 2020 Dominik Mierzejewski <rpm@greysector.net> 95-3
 - fix build on F31/F32
 
