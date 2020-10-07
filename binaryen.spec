@@ -3,7 +3,7 @@
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       96
+Version:       97
 Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
@@ -76,7 +76,6 @@ effective:
 %files
 %license LICENSE
 %doc README.md
-%{_bindir}/asm2wasm
 %{_bindir}/wasm-as
 %{_bindir}/wasm-ctor-eval
 %{_bindir}/wasm-dis
@@ -90,6 +89,9 @@ effective:
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Wed Oct 07 2020 Dominik Mierzejewski <rpm@greysector.net> 97-1
+- update to 97 (#1880087)
+
 * Tue Aug 18 2020 Dominik Mierzejewski <rpm@greysector.net> 96-1
 - update to 96
 - drop obsolete patch
