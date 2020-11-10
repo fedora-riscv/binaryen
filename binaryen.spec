@@ -3,13 +3,13 @@
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       97
+Version:       98
 Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
 # https://github.com/WebAssembly/binaryen/issues/2999
-Patch1:        %{name}-95-lib-tests.patch
+Patch1:        %{name}-98-lib-tests.patch
 License:       ASL 2.0
 
 # tests fail on big-endian
@@ -89,6 +89,9 @@ effective:
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Tue Nov 10 2020 Dominik Mierzejewski <rpm@greysector.net> 98-1
+- update to 98 (#1887966)
+
 * Wed Oct 07 2020 Dominik Mierzejewski <rpm@greysector.net> 97-1
 - update to 97 (#1880087)
 

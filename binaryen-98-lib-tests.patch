@@ -1,0 +1,38 @@
+diff -up binaryen-version_98/check.py.orig binaryen-version_98/check.py
+--- binaryen-version_98/check.py.orig	2020-10-13 17:32:02.000000000 +0200
++++ binaryen-version_98/check.py	2020-11-10 15:13:41.696470158 +0100
+@@ -308,7 +308,7 @@ def run_gcc_tests():
+             expected = os.path.join(shared.get_test_dir('example'), '.'.join(t.split('.')[:-1]) + '.txt')
+         if src.endswith(('.c', '.cpp')):
+             # build the C file separately
+-            libpath = os.path.join(os.path.dirname(shared.options.binaryen_bin),  'lib')
++            libpath = shared.options.binaryen_lib
+             extra = [shared.NATIVECC, src, '-c', '-o', 'example.o',
+                      '-I' + os.path.join(shared.options.binaryen_root, 'src'), '-g', '-L' + libpath, '-pthread']
+             if src.endswith('.cpp'):
+diff -up binaryen-version_98/scripts/test/shared.py.orig binaryen-version_98/scripts/test/shared.py
+--- binaryen-version_98/scripts/test/shared.py.orig	2020-10-13 17:32:02.000000000 +0200
++++ binaryen-version_98/scripts/test/shared.py	2020-11-10 13:48:49.530356221 +0100
+@@ -58,6 +58,10 @@ def parse_args(args):
+               ' If not specified, the environment variable BINARYEN_ROOT= can also'
+               ' be used to adjust this.'))
+     parser.add_argument(
++        '--binaryen-lib', dest='binaryen_lib', default='',
++        help=('Specifies a path to where the built Binaryen shared library resides at.'
++              ' Default: ../lib relative to bin specified above.'))
++    parser.add_argument(
+         '--binaryen-root', dest='binaryen_root', default='',
+         help=('Specifies a path to the root of the Binaryen repository tree.'
+               ' Default: the directory where this file check.py resides.'))
+@@ -123,6 +127,11 @@ if not options.binaryen_bin:
+ 
+ options.binaryen_bin = os.path.normpath(os.path.abspath(options.binaryen_bin))
+ 
++if not options.binaryen_lib:
++    options.binaryen_lib = os.path.join(options.binaryen_bin.join, '..', 'lib')
++
++options.binaryen_lib = os.path.normpath(os.path.abspath(options.binaryen_lib))
++
+ # ensure BINARYEN_ROOT is set up
+ os.environ['BINARYEN_ROOT'] = os.path.dirname(options.binaryen_bin)
+ 
