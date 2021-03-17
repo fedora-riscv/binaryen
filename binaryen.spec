@@ -3,13 +3,11 @@
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       98
-Release:       2%{?dist}
+Version:       100
+Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
-# https://github.com/WebAssembly/binaryen/issues/2999
-Patch1:        %{name}-98-lib-tests.patch
 License:       ASL 2.0
 
 # tests fail on big-endian
@@ -19,6 +17,8 @@ BuildRequires: cmake3
 BuildRequires: gcc-c++
 %if %{with check}
 BuildRequires: nodejs
+BuildRequires: python3dist(filecheck)
+BuildRequires: python3dist(lit)
 %endif
 
 # filter out internal shared library
@@ -51,7 +51,6 @@ effective:
 
 %prep
 %setup -q -n %{name}-version_%{version}
-%patch1 -p1
 
 %build
 %cmake3 \
@@ -67,10 +66,12 @@ effective:
 
 %if %{with check}
 %check
+install -pm755 %{__cmake_builddir}/bin/binaryen-lit %{buildroot}%{_bindir}
 ./check.py \
     --binaryen-bin %{buildroot}%{_bindir} \
     --binaryen-lib %{buildroot}%{_libdir}/%{name} \
 
+rm -v %{buildroot}%{_bindir}/binaryen-lit
 %endif
 
 %files
@@ -84,11 +85,17 @@ effective:
 %{_bindir}/wasm-opt
 %{_bindir}/wasm-reduce
 %{_bindir}/wasm-shell
+%{_bindir}/wasm-split
 %{_bindir}/wasm2js
 %{_includedir}/binaryen-c.h
+%{_includedir}/wasm-delegations.h
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Wed Mar 17 2021 Dominik Mierzejewski <rpm@greysector.net> 100-1
+- update to 100 (#1914377)
+- drop obsolete patch
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 98-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
