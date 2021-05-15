@@ -3,7 +3,7 @@
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
-Version:       100
+Version:       101
 Release:       1%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
@@ -92,6 +92,9 @@ rm -v %{buildroot}%{_bindir}/binaryen-lit
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Sat May 15 2021 Dominik Mierzejewski <rpm@greysector.net> 101-1
+- update to 101 (#1950518)
+
 * Wed Mar 17 2021 Dominik Mierzejewski <rpm@greysector.net> 100-1
 - update to 100 (#1914377)
 - drop obsolete patch
