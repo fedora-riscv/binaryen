@@ -1,5 +1,4 @@
 %bcond_without check
-%undefine __cmake_in_source_build
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
