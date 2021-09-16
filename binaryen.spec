@@ -1,4 +1,5 @@
-%bcond_without check
+%bcond_with check
+%undefine __cmake3_in_source_build
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
@@ -13,7 +14,7 @@ License:       ASL 2.0
 # https://github.com/WebAssembly/binaryen/issues/2983
 ExcludeArch:   ppc64 s390x
 BuildRequires: cmake3
-BuildRequires: gcc-c++
+BuildRequires: devtoolset-10-gcc-c++
 %if %{with check}
 BuildRequires: nodejs
 BuildRequires: python3dist(filecheck)
@@ -52,6 +53,7 @@ effective:
 %setup -q -n %{name}-version_%{version}
 
 %build
+. /opt/rh/devtoolset-10/enable
 %cmake3 \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_LIBDIR=%{_libdir}/%{name} \
@@ -66,6 +68,7 @@ effective:
 %if %{with check}
 %check
 install -pm755 %{__cmake_builddir}/bin/binaryen-lit %{buildroot}%{_bindir}
+. /opt/rh/devtoolset-10/enable
 ./check.py \
     --binaryen-bin %{buildroot}%{_bindir} \
     --binaryen-lib %{buildroot}%{_libdir}/%{name} \
@@ -93,6 +96,7 @@ rm -v %{buildroot}%{_bindir}/binaryen-lit
 %changelog
 * Sun Sep 12 2021 Dominik Mierzejewski <rpm@greysector.net> 102-1
 - update to 102 (#2003235)
+- use DevToolset 10 and disable tests on EPEL7 (missing dependencies)
 
 * Sat May 15 2021 Dominik Mierzejewski <rpm@greysector.net> 101-1
 - update to 101 (#1950518)
