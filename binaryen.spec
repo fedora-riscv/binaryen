@@ -3,7 +3,7 @@
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
 Version:       105
-Release:       1%{?dist}
+Release:       2%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
@@ -92,6 +92,9 @@ rm -v %{buildroot}%{_bindir}/binaryen-lit
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 105-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Sun Jan 16 2022 Dominik Mierzejewski <rpm@greysector.net> 105-1
 - update to 105 (#2040105)
 
