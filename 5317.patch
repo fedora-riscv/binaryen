@@ -1,0 +1,51 @@
+From 3eb0bc0aaf100c5bf1f26aa6fbcd01f4f63b1d15 Mon Sep 17 00:00:00 2001
+From: Thomas Lively <tlively@google.com>
+Date: Fri, 2 Dec 2022 11:56:46 -0800
+Subject: [PATCH] [NFC] Do not read past the end of a string_view
+
+wasm-s-parser.cpp was detecting the end of type strings by looking for null
+characters, but those null characters would be past the end of the relevant
+string_view. Bring that code in line with similar code by checking the length of
+the string_view instead. Fixes an assertion failure in MSVC debug mode.
+
+Fixes #5312.
+---
+ src/wasm/wasm-s-parser.cpp | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/wasm/wasm-s-parser.cpp b/src/wasm/wasm-s-parser.cpp
+index ab6230442ac..7bdbc69c675 100644
+--- a/src/wasm/wasm-s-parser.cpp
++++ b/src/wasm/wasm-s-parser.cpp
+@@ -1151,18 +1151,18 @@ Type SExpressionWasmBuilder::stringToType(std::string_view str,
+                                           bool prefix) {
+   if (str.size() >= 3) {
+     if (str[0] == 'i') {
+-      if (str[1] == '3' && str[2] == '2' && (prefix || str[3] == 0)) {
++      if (str[1] == '3' && str[2] == '2' && (prefix || str.size() == 3)) {
+         return Type::i32;
+       }
+-      if (str[1] == '6' && str[2] == '4' && (prefix || str[3] == 0)) {
++      if (str[1] == '6' && str[2] == '4' && (prefix || str.size() == 3)) {
+         return Type::i64;
+       }
+     }
+     if (str[0] == 'f') {
+-      if (str[1] == '3' && str[2] == '2' && (prefix || str[3] == 0)) {
++      if (str[1] == '3' && str[2] == '2' && (prefix || str.size() == 3)) {
+         return Type::f32;
+       }
+-      if (str[1] == '6' && str[2] == '4' && (prefix || str[3] == 0)) {
++      if (str[1] == '6' && str[2] == '4' && (prefix || str.size() == 3)) {
+         return Type::f64;
+       }
+     }
+@@ -1170,7 +1170,7 @@ Type SExpressionWasmBuilder::stringToType(std::string_view str,
+   if (str.size() >= 4) {
+     if (str[0] == 'v') {
+       if (str[1] == '1' && str[2] == '2' && str[3] == '8' &&
+-          (prefix || str[4] == 0)) {
++          (prefix || str.size() == 4)) {
+         return Type::v128;
+       }
+     }
