@@ -74,6 +74,10 @@ rm -v %{buildroot}%{_bindir}/binaryen-unittests
 
 %if %{with check}
 %check
+# https://github.com/WebAssembly/binaryen/issues/5353
+%ifarch i686
+rm -v test/passes/multi_unit_abbrev_noprint.{bin.txt,passes,wasm}
+%endif
 install -pm755 %{__cmake_builddir}/bin/binaryen-{lit,unittests} %{buildroot}%{_bindir}
 ./check.py \
     --binaryen-bin %{buildroot}%{_bindir} \
@@ -104,6 +108,7 @@ rm -v %{buildroot}%{_bindir}/binaryen-{lit,unittests}
 * Tue Dec 13 2022 Dominik Mierzejewski <dominik@greysector.net> 111-1
 - update to 111 (#2144160)
 - backport upstream fixes for OOB reads in string_view
+- disable multi_unit_abbrev_noprint.wasm test running out of memory on i686
 
 * Wed Sep 21 2022 Dominik Mierzejewski <rpm@greysector.net> 110-1
 - update to 110 (#2081423)
