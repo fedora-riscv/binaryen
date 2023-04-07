@@ -3,7 +3,7 @@
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
 Version:       111
-Release:       2%{?dist}
+Release:       2.rv64%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
@@ -11,6 +11,7 @@ Patch0:        %{name}-use-system-gtest.patch
 Patch1:        https://github.com/WebAssembly/binaryen/pull/5317.patch
 # backported from https://github.com/WebAssembly/binaryen/pull/5349
 Patch2:        5349.patch
+Patch3:        5458.patch
 License:       ASL 2.0
 
 # tests fail on big-endian
@@ -58,6 +59,7 @@ effective:
 %patch0 -p1 -b .gtest
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %cmake3 \
@@ -105,6 +107,9 @@ rm -v %{buildroot}%{_bindir}/binaryen-{lit,unittests}
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
+* Fri Apr 07 2023 David Abdurachmanov <davidlt@rivosinc.com> - 111-2.0.riscv64
+- Backport fix for GCC 13
+
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 111-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
 

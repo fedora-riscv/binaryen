@@ -1,0 +1,32 @@
+From eed5e8fc5e178faf2eacfeb0a209ee45d01ccce8 Mon Sep 17 00:00:00 2001
+From: Dominik Mierzejewski <dominik@greysector.net>
+Date: Thu, 26 Jan 2023 16:09:09 +0100
+Subject: [PATCH] add explicit include for <cstdint>
+
+This fixes the following error when compiling with GCC 13:
+```
+In file included from /builddir/build/BUILD/binaryen-version_111/test/gtest/wat-lexer.cpp:19:
+/builddir/build/BUILD/binaryen-version_111/src/wat-lexer.h:62:3: error: 'uint64_t' does not name a type
+   62 |   uint64_t n;
+      |   ^~~~~~~~
+/builddir/build/BUILD/binaryen-version_111/src/wat-lexer.h:24:1: note: 'uint64_t' is defined in header '<cstdint>'; did you forget to '#include <cstdint>'?
+   23 | #include <variant>
+  +++ |+#include <cstdint>
+...
+```
+---
+ src/wat-lexer.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/wat-lexer.h b/src/wat-lexer.h
+index d73c11faf72..7b6c9355201 100644
+--- a/src/wat-lexer.h
++++ b/src/wat-lexer.h
+@@ -15,6 +15,7 @@
+  */
+ 
+ #include <cstddef>
++#include <cstdint>
+ #include <cstring>
+ #include <iterator>
+ #include <optional>
