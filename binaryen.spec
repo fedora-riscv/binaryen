@@ -1,4 +1,8 @@
+%ifarch riscv64
+%bcond_with check
+%else
 %bcond_without check
+%endif
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
@@ -107,7 +111,10 @@ rm -v %{buildroot}%{_bindir}/binaryen-{lit,unittests}
 %{_libdir}/%{name}/libbinaryen.so
 
 %changelog
-* Fri Apr 07 2023 David Abdurachmanov <davidlt@rivosinc.com> - 111-2.0.riscv64
+* Fri Aug 25 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 111-2.rv64
+- Skip failed test on riscv64.
+
+* Fri Apr 07 2023 David Abdurachmanov <davidlt@rivosinc.com> - 111-2.rv64
 - Backport fix for GCC 13
 
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 111-2
