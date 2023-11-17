@@ -1,9 +1,9 @@
-%bcond_without check
+%bcond_with check
 
 Summary:       Compiler and toolchain infrastructure library for WebAssembly
 Name:          binaryen
 Version:       116
-Release:       1%{?dist}
+Release:       1.rv64%{?dist}
 
 URL:           https://github.com/WebAssembly/binaryen
 Source0:       %{url}/archive/version_%{version}/%{name}-version_%{version}.tar.gz
